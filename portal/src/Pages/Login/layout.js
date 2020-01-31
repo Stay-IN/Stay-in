@@ -30,7 +30,6 @@ class Layout extends Component {
     const response = await AuthServices.login(username, password);
     if (!response.success) {
       const message = response.data.message;
-      console.log(message);
       this.setState({
         message: message[0],
         isOpen: true,
@@ -53,32 +52,32 @@ class Layout extends Component {
     const { username, password } = this.state;
     return (
       <div className={classes.container}>
-        <Header title='Login' />
+        <Header title="Login" />
         <Snackbar
           errorMessage={this.state.message}
           isOpen={this.state.isOpen}
           handleClose={() => this.setState({ isOpen: false })}
           variant={this.state.variant}
         />
-        <Container component='main' maxWidth='xs'>
+        <Container component="main" maxWidth="xs">
           <div className={classes.paper}>
-            <img src='/images/boy.svg' alt='svgicon' height='150' width='150' />
+            <img src="/images/boy.svg" alt="svgicon" height="150" width="150" />
             <form className={classes.form} noValidate>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
                     AccountCircle
                     autoFocus
-                    variant='outlined'
+                    variant="outlined"
                     required
                     fullWidth
-                    id='username'
-                    placeholder='Email'
-                    name='email'
+                    id="username"
+                    placeholder="Email"
+                    name="email"
                     InputProps={{
                       startAdornment: (
                         <InputAdornment
-                          position='start'
+                          position="start"
                           style={{ color: '#1e90ff' }}
                         >
                           <AccountCircle />
@@ -91,18 +90,18 @@ class Layout extends Component {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    variant='outlined'
+                    variant="outlined"
                     required
                     fullWidth
-                    name='password'
-                    placeholder='password'
-                    type='password'
-                    id='password'
-                    autoComplete='current-password'
+                    name="password"
+                    placeholder="password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
                     InputProps={{
                       startAdornment: (
                         <InputAdornment
-                          position='start'
+                          position="start"
                           style={{ color: '#1e90ff' }}
                         >
                           <LockIcon />
@@ -117,8 +116,8 @@ class Layout extends Component {
 
               <Button
                 onClick={this.onClickLogin}
-                variant='contained'
-                color='primary'
+                variant="contained"
+                color="primary"
                 className={classes.button}
                 fullWidth
                 disabled={this.state.isChecking ? true : false}
@@ -128,7 +127,7 @@ class Layout extends Component {
             </form>
           </div>
         </Container>
-          </div>
+      </div>
     );
   }
 }

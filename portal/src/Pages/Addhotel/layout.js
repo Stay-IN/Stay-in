@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import {
   withStyles,
+  Typography,
   Container,
   Grid,
   TextField,
   Button,
   CircularProgress
 } from '@material-ui/core';
-import { Header, Snackbar } from 'Components';
-import { HotelServices } from 'Services';
 
 import style from './style';
+import { Snackbar, Header } from 'Components';
+
+import { HotelServices } from 'Services';
 
 class Layout extends Component {
   state = {
@@ -28,7 +30,8 @@ class Layout extends Component {
     image: '',
     message: '',
     variant: 'error',
-    isChecking: false
+    isChecking: false,
+    isOpen: false
   };
 
   handleInput = e => {
@@ -74,14 +77,14 @@ class Layout extends Component {
       image: hotelImageUrl
     });
     if (!response.success) {
-      const data = response.data.message;
+      const message = response.data.message;
       this.setState({
-        message: data[0],
+        message: message[0],
         isOpen: true,
         variant: 'error'
       });
     } else {
-      this.props.history.push('/');
+      this.props.history.push('/thankspage');
     }
     // Clear The State
     this.setState({
@@ -97,33 +100,79 @@ class Layout extends Component {
       pancard: '',
       description: '',
       image: '',
-      isAdded: true
+      isAdded: true,
+      isChecking: false
     });
   };
 
   handleImage = e => {
     this.setState({ image: e.target.files[0] });
+  };
+
+  state = {
+    hotels: []
+  };
+
+  async componentDidMount() {
+    const response = await HotelServices.getHotels();
+    if (response.success) {
+      this.setState({ hotels: response.data.hotels });
+    }
   }
+  searchHotel = async e => {
+    const search = e.target.value;
+    let response;
+    if (search) {
+      response = await HotelServices.searchHotel(search);
+      if (response.success) {
+        this.setState({ hotels: response.data.hotels });
+      }
+    } else {
+      response = await HotelServices.getHotels();
+      if (response.success) {
+        this.setState({ hotels: response.data.hotels });
+      }
+    }
+  };
+
+  handleNavigation = id => {
+    this.props.history.push(`/room/${id}`);
+  };
   render() {
     const { classes } = this.props;
     return (
       <div>
-        <Header title='Hotel Registration' />
+        <Header />
         <Snackbar
           errorMessage={this.state.message}
           isOpen={this.state.isOpen}
           handleClose={() => this.setState({ isOpen: false })}
           variant={this.state.variant}
         />
-        <Container maxWidth='md' style={{ height: "95vh" }}>
+        <div className="header" className={classes.mainheader}>
+          <div className={classes.overlay}></div>
+          <div className={classes.headerContent}>
+            <Typography variant="h5" className={classes.typo}>
+              Register your hotel with Stayin
+            </Typography>
+          </div>
+        </div>
+        <Container maxWidth="md" style={{ height: '95vh' }}>
           <Grid container spacing={3} className={classes.container}>
             <Grid item xs={12} md={12} lg={12}>
+              <Typography
+                variant="h5"
+                color="defulat"
+                style={{ marginTop: '2rem' }}
+              >
+                About your Hotel
+              </Typography>
               <TextField
-                name='hotelname'
-                id='hotelName'
+                name="hotelname"
+                id="hotelName"
                 className={classes.textField}
-                variant='outlined'
-                label='Hotel Name'
+                variant="outlined"
+                label="Hotel Name"
                 fullWidth
                 value={this.state.hotelName}
                 onChange={this.handleInput}
@@ -132,12 +181,12 @@ class Layout extends Component {
 
             <Grid item xs={12} md={6} lg={6}>
               <TextField
-                name='address'
-                id='address'
-                label='Address'
+                name="address"
+                id="address"
+                label="Address"
                 multiline
                 className={classes.textField}
-                variant='outlined'
+                variant="outlined"
                 fullWidth
                 value={this.state.address}
                 onChange={this.handleInput}
@@ -146,11 +195,11 @@ class Layout extends Component {
 
             <Grid item xs={12} md={6} lg={6}>
               <TextField
-                name='city'
-                id='city'
+                name="city"
+                id="city"
                 className={classes.textField}
-                variant='outlined'
-                label='City'
+                variant="outlined"
+                label="City"
                 fullWidth
                 value={this.state.city}
                 onChange={this.handleInput}
@@ -158,11 +207,11 @@ class Layout extends Component {
             </Grid>
             <Grid item xs={12} md={6} sm={12}>
               <TextField
-                name='pincode'
-                id='pincode'
+                name="pincode"
+                id="pincode"
                 className={classes.textField}
-                variant='outlined'
-                label='Pin code'
+                variant="outlined"
+                label="Pin code"
                 fullWidth
                 value={this.state.pincode}
                 onChange={this.handleInput}
@@ -170,11 +219,11 @@ class Layout extends Component {
             </Grid>
             <Grid item xs={12} md={6} lg={6} sm={12}>
               <TextField
-                id='mobile'
-                name='mobileno'
+                id="mobile"
+                name="mobileno"
                 className={classes.textField}
-                variant='outlined'
-                label='Mobile No'
+                variant="outlined"
+                label="Mobile No"
                 fullWidth
                 value={this.state.mobile}
                 onChange={this.handleInput}
@@ -182,11 +231,11 @@ class Layout extends Component {
             </Grid>
             <Grid item xs={12} md={6} lg={6} sm={12}>
               <TextField
-                id='state'
-                name='state'
+                id="state"
+                name="state"
                 className={classes.textField}
-                variant='outlined'
-                label='State'
+                variant="outlined"
+                label="State"
                 fullWidth
                 value={this.state.state}
                 onChange={this.handleInput}
@@ -194,11 +243,11 @@ class Layout extends Component {
             </Grid>
             <Grid item xs={12} md={6} lg={6} sm={12}>
               <TextField
-                id='star'
-                name='star'
+                id="star"
+                name="star"
                 className={classes.textField}
-                variant='outlined'
-                label='Star'
+                variant="outlined"
+                label="Star"
                 fullWidth
                 value={this.state.star}
                 onChange={this.handleInput}
@@ -206,26 +255,25 @@ class Layout extends Component {
             </Grid>
             <Grid item xs={12} md={12} lg={12} sm={12}>
               <TextField
-                id='email'
-                name='email'
+                id="email"
+                name="email"
                 className={classes.textField}
-                variant='outlined'
-                label='Email'
-                placeholder='Enter Your Email'
+                variant="outlined"
+                label="Email"
+                placeholder="Enter Your Email"
                 fullWidth
                 value={this.state.email}
                 onChange={this.handleInput}
               />
             </Grid>
 
-
             <Grid item xs={12} md={12} lg={12}>
               <TextField
-                id='pancard'
-                name='panno'
+                id="pancard"
+                name="panno"
                 className={classes.textField}
-                variant='outlined'
-                label='Pancard No'
+                variant="outlined"
+                label="Pancard No"
                 fullWidth
                 value={this.state.pancard}
                 onChange={this.handleInput}
@@ -233,11 +281,11 @@ class Layout extends Component {
             </Grid>
             <Grid item xs={12} md={12} lg={12}>
               <TextField
-                id='description'
-                name='Description'
+                id="description"
+                name="Description"
                 className={classes.textField}
-                variant='outlined'
-                label='Description'
+                variant="outlined"
+                label="Description"
                 fullWidth
                 value={this.state.description}
                 onChange={this.handleInput}
@@ -245,31 +293,33 @@ class Layout extends Component {
             </Grid>
             <Grid item xs={12} md={12} lg={12}>
               <TextField
-                id='image'
-                type='file'
-                name='Select Hotel Image'
+                id="image"
+                type="file"
+                name="Select Hotel Image"
                 className={classes.textField}
-                variant='outlined'
+                variant="outlined"
                 fullWidth
                 onChange={this.handleImage}
               />
             </Grid>
+            <Grid item xs={12} md={6} lg={6}>
+              <Button
+                onClick={this.handleSubmit}
+                style={{ marginTop: '2rem' }}
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                disabled={this.state.isChecking ? true : false}
+              >
+                {this.state.isChecking && <CircularProgress size={20} />}
+                Submit
+              </Button>
+            </Grid>
           </Grid>
-
-          <Button
-            onClick={this.handleSubmit}
-            fullWidth
-            style={{ marginTop: "1rem" }}
-            variant='contained'
-            color='primary'
-            className={classes.submit}
-            disabled={this.state.isChecking ? true : false} >
-            {this.state.isChecking && <CircularProgress size={20} />}
-            Register Hotel
-          </Button>
         </Container>
       </div>
-    )
+    );
   }
 }
 

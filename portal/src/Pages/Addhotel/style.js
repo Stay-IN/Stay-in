@@ -3,7 +3,7 @@ const background =
 
 const style = theme => ({
   mainheader: {
-    height: '50vh',
+    height: '18vh',
     position: 'relative',
     background: `url(${background})`,
     backgroundPosition: 'center',
@@ -15,7 +15,7 @@ const style = theme => ({
     bottom: 0,
     right: 0,
     left: 0,
-    height: '100%',
+    height: '18vh',
     backgroundColor: 'rgba(0,0,0,.3)'
   },
   headerContent: {
@@ -23,7 +23,7 @@ const style = theme => ({
     alignItems: 'Center',
     justifyContent: 'Center',
     color: 'white',
-    height: '50vh',
+    height: '20vh',
     flexDirection: 'column'
   },
   button: {
@@ -81,6 +81,15 @@ const style = theme => ({
     margin: '0px auto',
     color: '#1e90ff',
     fontSize: theme.spacing() * 3
+  },
+  navigationBar: {
+    backgroun0dColor: theme.palette.primary.main
+  },
+  title: {
+    flexGrow: 1
+  },
+  buttontitle: {
+    marginRight: theme.spacing(2)
   }
 });
 export default style;
