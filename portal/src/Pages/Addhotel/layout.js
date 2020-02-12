@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 
 import style from './style';
-import { Snackbar, Header } from 'Components';
+import { Snackbar } from 'Components';
 
 import { HotelServices } from 'Services';
 
@@ -142,7 +142,6 @@ class Layout extends Component {
     const { classes } = this.props;
     return (
       <div>
-        <Header />
         <Snackbar
           errorMessage={this.state.message}
           isOpen={this.state.isOpen}

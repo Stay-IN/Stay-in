@@ -13,7 +13,7 @@ import {
   CircularProgress
 } from '@material-ui/core';
 import style from './style';
-import { Header, Snackbar } from 'Components';
+import { Snackbar } from 'Components';
 
 class Layout extends Component {
   state = {
@@ -37,6 +37,7 @@ class Layout extends Component {
       });
     } else {
       this.props.history.push('/');
+      window.location.reload();
     }
     this.setState({
       username: '',
@@ -52,7 +53,6 @@ class Layout extends Component {
     const { username, password } = this.state;
     return (
       <div className={classes.container}>
-        <Header title="Login" />
         <Snackbar
           errorMessage={this.state.message}
           isOpen={this.state.isOpen}

@@ -6,7 +6,7 @@ const style = theme => ({
     // marginTop:theme.spacing() * 10,
   },
   navigationBar: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: 'black',
     marginTop: theme.spacing(0),
     padding: theme.spacing(1, 0)
   },

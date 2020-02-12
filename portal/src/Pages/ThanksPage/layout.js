@@ -4,8 +4,6 @@ import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAlt'
 
 import style from './style';
 
-import { Header } from 'Components';
-
 import { AuthServices } from 'Services';
 
 class Layout extends Component {
@@ -26,7 +24,6 @@ class Layout extends Component {
 
     return (
       <div>
-        <Header />
         <div className={classes.hello}>
           <Grid container md={10}>
             <Grid item>

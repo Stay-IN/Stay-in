@@ -3,16 +3,24 @@ const config = require('config');
 const addHotel = async (req, res, next) => {
   const {
     hotelName,
+    slug,
+    type,
     address,
     city,
     pincode,
     state,
     mobile,
+    capacity,
+    wifi,
+    url,
+    url1,
+    url2,
+    url3,
+    price,
     star,
     email,
     pancard,
-    description,
-    image
+    description
   } = req.body;
   const message = [];
   if (!hotelName) {
@@ -30,6 +38,9 @@ const addHotel = async (req, res, next) => {
   if (!mobile) {
     message.push('mobile is required');
   }
+  if (!price) {
+    message.push('price is required');
+  }
   if (!state) {
     message.push('state is required');
   }
@@ -45,9 +56,9 @@ const addHotel = async (req, res, next) => {
   if (!description) {
     message.push('description is required');
   }
-  if (!image) {
-    message.push('upload your hotel images');
-  }
+  // if (!image) {
+  //   message.push('upload your hotel images');
+  // }
 
   if (
     !email ||
@@ -56,12 +67,12 @@ const addHotel = async (req, res, next) => {
     !city ||
     !pincode ||
     !mobile ||
+    !price ||
     !state ||
     !star ||
     !email ||
     !pancard ||
-    !description ||
-    !image
+    !description
   ) {
     res.json({
       code: 401,
@@ -72,28 +83,82 @@ const addHotel = async (req, res, next) => {
     });
     return;
   }
-  hotel = await new Hotel({
+
+  const hotelData = {
     hotelName,
+    slug,
+    type,
     address,
     city,
     pincode,
-    mobile,
     state,
+    mobile,
+    capacity,
+    wifi,
+    price,
     star,
     email,
     pancard,
     description,
-    image
-  }).save();
-  res.status(200);
-  res.json({
-    code: 200,
-    data: {
-      hotel
-    },
-    success: true
-  });
-  return;
+    images: [
+      {
+        url
+      },
+      {
+        url: url1
+      },
+      {
+        url: url2
+      },
+      {
+        url: url3
+      }
+    ]
+  };
+
+  try {
+    const Uhotel = await Hotel.findOne({ email });
+    if (Uhotel) {
+      hotel = await Hotel.findOneAndUpdate(
+        { email },
+        { $set: hotelData },
+        { new: true }
+      );
+
+      return res.status(200).json({
+        code: 200,
+        data: {
+          message: ['Hotel Updated'],
+          hotel
+        },
+        success: true
+      });
+    } else {
+      const pancardUnick = await Hotel.findOne({ pancard });
+      if (pancardUnick) {
+        return res.status(200).json({
+          code: 200,
+          data: {
+            message: ['pancard must unique']
+          },
+          success: false
+        });
+      }
+      hotel = await new Hotel(hotelData).save();
+      res.status(200);
+      res.json({
+        code: 200,
+        data: {
+          message: ['Hotel Added'],
+          hotel
+        },
+        success: true
+      });
+      return;
+    }
+  } catch (error) {
+    res.json({ msg: 'server error', error });
+  }
 };
 
 const getHotels = async (req, res, next) => {
@@ -146,9 +211,21 @@ const searchHotel = async (req, res, next) => {
   });
 };
 
+const deleteHotelsById = async (req, res, next) => {
+  const { _id } = req.params;
+  await Hotel.findOneAndDelete({ _id });
+  res.json({
+    code: 200,
+    data: {
+      message: ['Hotel Removed']
+    }
+  });
+};
+
 module.exports = {
   addHotel,
   getHotels,
   getHotelsById,
-  searchHotel
+  searchHotel,
+  deleteHotelsById
 };

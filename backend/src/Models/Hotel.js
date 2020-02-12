@@ -9,6 +9,14 @@ const hotelSchema = new Schema(
       type: mongoose.Schema.Types.String,
       require: true
     },
+    slug: {
+      type: mongoose.Schema.Types.String,
+      require: true
+    },
+    type: {
+      type: mongoose.Schema.Types.String,
+      require: true
+    },
     address: {
       type: mongoose.Schema.Types.String,
       require: true
@@ -38,6 +46,15 @@ const hotelSchema = new Schema(
       type: mongoose.Schema.Types.Number,
       require: true
     },
+    price: {
+      type: mongoose.Schema.Types.Number,
+      require: true
+    },
+    capacity: {
+      type: mongoose.Schema.Types.Number,
+      require: true
+    },
+    wifi: { type: Boolean, default: false },
     pancard: {
       type: mongoose.Schema.Types.String,
       require: true,
@@ -47,10 +64,15 @@ const hotelSchema = new Schema(
       type: mongoose.Schema.Types.String,
       require: true
     },
-    image: {
-      type: mongoose.Schema.Types.String,
-      require: true
-    }
+    images: [
+      {
+        url: {
+          type: mongoose.Schema.Types.String,
+          require: true
+        }
+      }
+    ],
+    date: { type: Date, default: Date.now }
   },
   SchemaOptions
 );
