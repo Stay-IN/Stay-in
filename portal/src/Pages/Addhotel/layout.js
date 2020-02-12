@@ -6,7 +6,13 @@ import {
   Grid,
   TextField,
   Button,
-  CircularProgress
+  CircularProgress,
+  FormControlLabel,
+  Checkbox,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from '@material-ui/core';
 
 import style from './style';
@@ -16,7 +22,7 @@ import { HotelServices } from 'Services';
 
 class Layout extends Component {
   state = {
-    hotelname: '',
+    hotelName: '',
     address: '',
     city: '',
     pincode: '',
@@ -31,12 +37,19 @@ class Layout extends Component {
     message: '',
     variant: 'error',
     isChecking: false,
-    isOpen: false
+    isOpen: false,
+    wifi: false,
+    type: '',
+    slug: ''
   };
 
   handleInput = e => {
+    const target = e.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    console.log(name, value);
     this.setState({
-      [e.target.id]: e.target.value
+      [name]: value
     });
   };
 
@@ -107,6 +120,7 @@ class Layout extends Component {
 
   handleImage = e => {
     this.setState({ image: e.target.files[0] });
+    // console.log(this.state.image.name);
   };
 
   state = {
@@ -138,6 +152,11 @@ class Layout extends Component {
   handleNavigation = id => {
     this.props.history.push(`/room/${id}`);
   };
+
+  handleChange = name => event => {
+    this.setState({ ...this.state, [name]: event.target.checked });
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -219,7 +238,7 @@ class Layout extends Component {
             <Grid item xs={12} md={6} lg={6} sm={12}>
               <TextField
                 id="mobile"
-                name="mobileno"
+                name="mobile"
                 className={classes.textField}
                 variant="outlined"
                 label="Mobile No"
@@ -253,6 +272,60 @@ class Layout extends Component {
               />
             </Grid>
             <Grid item xs={12} md={12} lg={12} sm={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    type="checkbox"
+                    name="wifi"
+                    id="wifi"
+                    checked={this.state.wifi}
+                    onChange={this.handleInput}
+                    color="primary"
+                  />
+                }
+                label="Wifi"
+              />
+              <FormControl className={classes.formControl}>
+                <InputLabel id="type">Room Type</InputLabel>
+                <Select
+                  name="type"
+                  id="type"
+                  variant="outlined"
+                  fullWidth
+                  value={this.state.type}
+                  onChange={this.handleInput}
+                >
+                  <MenuItem value={'single'}>Single</MenuItem>
+                  <MenuItem value={'double'}>Double</MenuItem>
+                  <MenuItem value={'family'}>Family</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl className={classes.formControl}>
+                <InputLabel id="slug">Room Categary</InputLabel>
+                <Select
+                  name="slug"
+                  id="slug"
+                  variant="outlined"
+                  fullWidth
+                  value={this.state.slug}
+                  onChange={this.handleInput}
+                >
+                  <MenuItem value={'single-economy'}>Single Economy</MenuItem>
+                  <MenuItem value={'single-basic'}>Single Basic</MenuItem>
+                  <MenuItem value={'single-standard'}>Single Standard</MenuItem>
+                  <MenuItem value={'single-deluxe'}>Single Deluxe</MenuItem>
+                  <MenuItem value={'double-economy'}>Double Economy</MenuItem>
+                  <MenuItem value={'double-basic'}>Double Basic</MenuItem>
+                  <MenuItem value={'double-standard'}>Double Standard</MenuItem>
+                  <MenuItem value={'double-deluxe'}>Double Deluxe</MenuItem>
+                  <MenuItem value={'family-economy'}>Family Economy</MenuItem>
+                  <MenuItem value={'family-basic'}>Family Basic</MenuItem>
+                  <MenuItem value={'family-standard'}>Family Standard</MenuItem>
+                  <MenuItem value={'family-deluxe'}>Family Deluxe</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={12} lg={12} sm={12}>
               <TextField
                 id="email"
                 name="email"
@@ -269,7 +342,7 @@ class Layout extends Component {
             <Grid item xs={12} md={12} lg={12}>
               <TextField
                 id="pancard"
-                name="panno"
+                name="pancard"
                 className={classes.textField}
                 variant="outlined"
                 label="Pancard No"
@@ -290,7 +363,7 @@ class Layout extends Component {
                 onChange={this.handleInput}
               />
             </Grid>
-            <Grid item xs={12} md={12} lg={12}>
+            <Grid item xs={12} md={6} lg={6} sm={12}>
               <TextField
                 id="image"
                 type="file"
@@ -301,6 +374,40 @@ class Layout extends Component {
                 onChange={this.handleImage}
               />
             </Grid>
+            {/* <Grid item xs={12} md={6} lg={6} sm={12}>
+              <TextField
+                id="image"
+                type="file"
+                name="Select Hotel Image"
+                className={classes.textField}
+                variant="outlined"
+                fullWidth
+                onChange={this.handleImage}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} lg={6} sm={12}>
+              <TextField
+                id="image"
+                type="file"
+                name="Select Hotel Image"
+                className={classes.textField}
+                variant="outlined"
+                fullWidth
+                onChange={this.handleImage}
+              />
+            </Grid>
+
+            <Grid item xs={12} md={6} lg={6} sm={12}>
+              <TextField
+                id="image"
+                type="file"
+                name="Select Hotel Image"
+                className={classes.textField}
+                variant="outlined"
+                fullWidth
+                onChange={this.handleImage}
+              />
+            </Grid> */}
             <Grid item xs={12} md={6} lg={6}>
               <Button
                 onClick={this.handleSubmit}
