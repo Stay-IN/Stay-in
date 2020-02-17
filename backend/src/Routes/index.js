@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const multer = require('multer');
-const uuidv4 = require('uuid/v4');
 const DIR = './public/';
 
 const { Hotel } = require('Models');
@@ -28,7 +27,7 @@ const storage = multer.diskStorage({
       .toLowerCase()
       .split(' ')
       .join('-');
-    cb(null, uuidv4() + '-' + fileName);
+    cb(null, 'stayin' + '-' + fileName);
   }
 });
 
@@ -49,7 +48,7 @@ var upload = multer({
 });
 
 router.post(
-  '/addhotel',
+  '/Addhotelhere',
   upload.array('imgCollection', 6),
   async (req, res, next) => {
     const reqFiles = [];
