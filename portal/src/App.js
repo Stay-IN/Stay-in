@@ -7,13 +7,12 @@ import Error from './Pages/Error';
 import Navbar from './Components/Navbar';
 import { Login, Singup, Addhotel, Thankspage } from 'Pages';
 
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 function App() {
   return (
     <>
       <Navbar />
-      {/* <Router> */}
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/rooms/" component={Rooms} />
@@ -24,7 +23,6 @@ function App() {
         <Route exact path="/Thankspage" component={Thankspage} />
         <Route component={Error} />
       </Switch>
-      {/* </Router> */}
     </>
   );
 }

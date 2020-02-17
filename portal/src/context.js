@@ -40,7 +40,7 @@ export default class RoomProvider extends Component {
   formatData(items) {
     let tempItems = items.map(item => {
       let id = item._id;
-      let images = item.images.map(image => image.url);
+      let images = item.imgCollection.map(image => image);
 
       let room = { ...item, images, id };
       return room;
@@ -82,11 +82,6 @@ export default class RoomProvider extends Component {
     // search by city $ hotelname
     if (search) {
       response = await HotelServices.searchHotel(search);
-      if (response.success) {
-        tempRooms = response.data.hotels;
-      }
-    } else {
-      response = await HotelServices.getHotels();
       if (response.success) {
         tempRooms = response.data.hotels;
       }

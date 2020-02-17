@@ -64,14 +64,9 @@ const hotelSchema = new Schema(
       type: mongoose.Schema.Types.String,
       require: true
     },
-    images: [
-      {
-        url: {
-          type: mongoose.Schema.Types.String,
-          require: true
-        }
-      }
-    ],
+    imgCollection: {
+      type: Array
+    },
     date: { type: Date, default: Date.now }
   },
   SchemaOptions
