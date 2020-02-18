@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { FaAlignRight } from 'react-icons/fa';
 import { Button, Typography } from '@material-ui/core';
 import { createBrowserHistory } from 'history';
 
@@ -29,25 +28,11 @@ export default class Navbar extends Component {
             <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
               <Typography variant="h6">{'STAY IN'}</Typography>
             </Link>
-            <button
-              type="button"
-              className="nav-btn"
-              onClick={this.handleToggle}
-            >
-              <FaAlignRight className="nav-icon" />
-            </button>
           </div>
           <ul
             style={{ flexGrow: 1 }}
             className={this.state.isOpen ? 'nav-links show-nav' : 'nav-links'}
-          >
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/rooms">Rooms</Link>
-            </li>
-          </ul>
+          ></ul>
           {AuthServices.isAuthenticated() && (
             <Button
               onClick={this.handleLogout}

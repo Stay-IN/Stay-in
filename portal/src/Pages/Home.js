@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Hero from '../Components/Hero';
 import Banner from '../Components/Banner';
 import Services from '../Components/Services';
 import FeaturedRooms from '../Components/FeaturedRooms';
+import RoomsContainer from '../Components/RoomsContainer';
+
 import { Footer } from 'Components';
 
 const home = () => {
@@ -13,12 +14,9 @@ const home = () => {
         <Banner
           title="luxurious rooms"
           subtitle="deluxe rooms starting at  &#8377;500"
-        >
-          <Link to="/rooms" className="btn-primary">
-            our rooms
-          </Link>
-        </Banner>
+        ></Banner>
       </Hero>
+      <RoomsContainer />
       <Services />
       <FeaturedRooms />
       <Footer />

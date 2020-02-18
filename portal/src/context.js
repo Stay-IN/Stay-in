@@ -25,10 +25,12 @@ export default class RoomProvider extends Component {
     const datano = await HotelServices.getHotels();
     const items = datano.data.hotels;
     let rooms = this.formatData(items);
+    let featuredRooms = rooms.filter(room => room.featured === true);
     //
     let maxPrice = Math.max(...rooms.map(item => item.price));
     this.setState({
       rooms,
+      featuredRooms,
       sortedRooms: rooms,
       loading: false,
       //
