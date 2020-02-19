@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Typography } from '@material-ui/core';
 import { createBrowserHistory } from 'history';
-
 import { AuthServices } from 'Services';
 
 const history = createBrowserHistory();

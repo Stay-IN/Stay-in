@@ -24,6 +24,7 @@ class Layout extends Component {
                     href="http://localhost:3000/addhotel"
                     className={classes.block}
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     Register your Hotel
                   </a>
@@ -60,7 +61,7 @@ class Layout extends Component {
               color="textSecondary"
               className={classes.footerTypo}
             >
-              Made With 💗
+              Made With &#10084;
             </Typography>
           </Container>
         </Toolbar>
