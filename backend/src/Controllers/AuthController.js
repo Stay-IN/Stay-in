@@ -238,24 +238,39 @@ const managersignup = async (req, res, next) => {
   return;
 };
 
-const getMById = async (req, res, next) => {
-  const { _id } = req.params;
-  const manager = await Manager.findOne({ _id });
-  if (manager) {
-    res.json({
+const getUById = async (req, res, next) => {
+  const { username, password } = req.body;
+  const Fuser = await User.findOne({ username });
+  if (Fuser) {
+    manager = await User.findOneAndUpdate(
+      { username },
+      { $set: { password } },
+      { new: true }
+    );
+    res.status(200).json({
       code: 200,
       data: {
-        manager
+        message: ['password Updated']
       },
       success: true
     });
+    return;
+  }
+  if (!Fuser) {
+    res.status(404).json({
+      code: 404,
+      data: {
+        message: ['user does not exist']
+      },
+      success: false
+    });
+    return;
   }
 };
-
 module.exports = {
   login,
   signup,
   managerlogin,
   managersignup,
-  getMById
+  getUById
 };

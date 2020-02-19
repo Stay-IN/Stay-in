@@ -10,10 +10,17 @@ import {
   Button,
   Container,
   Grid,
-  CircularProgress
+  CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Typography
 } from '@material-ui/core';
 import style from './style';
 import { Snackbar } from 'Components';
+import axios from 'axios';
+import Config from 'Config';
 
 class Layout extends Component {
   state = {
@@ -22,7 +29,10 @@ class Layout extends Component {
     isOpen: false,
     message: '',
     variant: 'error',
-    isChecking: false
+    isChecking: false,
+    open: false,
+    Fusername: '',
+    Fpassword: ''
   };
   onClickLogin = async () => {
     this.setState({ isChecking: true });
@@ -48,9 +58,44 @@ class Layout extends Component {
     });
   };
 
+  handleClickOpen = () => {
+    this.setState({ open: true });
+  };
+  handleClose1 = () => {
+    this.setState({ open: false });
+  };
+
+  handleClose = async () => {
+    const username = this.state.Fusername;
+    const password = this.state.Fpassword;
+    try {
+      const response = await axios.post(`${Config.SERVER_URL}/user`, {
+        username,
+        password
+      });
+      const message = response.data.data.message;
+      this.setState({
+        message: message[0],
+        isOpen: true,
+        variant: 'error',
+        Fusername: '',
+        Fpassword: '',
+        open: false
+      });
+    } catch (error) {
+      this.setState({
+        message: 'User does not exist',
+        isOpen: true,
+        variant: 'error',
+        Fusername: '',
+        Fpassword: ''
+      });
+    }
+  };
+
   render() {
     const { classes } = this.props;
-    const { username, password } = this.state;
+    const { username, password, Fusername, Fpassword, open } = this.state;
     return (
       <div className={classes.container}>
         <Snackbar
@@ -113,6 +158,50 @@ class Layout extends Component {
                   />
                 </Grid>
               </Grid>
+              <Dialog
+                open={open}
+                onClose={this.handleClose}
+                aria-labelledby="form-dialog-title"
+              >
+                <DialogTitle id="form-dialog-title">
+                  Forgot your password ?
+                </DialogTitle>
+                <DialogContent>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    variant="outlined"
+                    id="Fusername"
+                    name="Fusername"
+                    placeholder="Email Address"
+                    type="email"
+                    fullWidth
+                    value={Fusername}
+                    onChange={e => this.setState({ Fusername: e.target.value })}
+                  />
+                </DialogContent>
+                <DialogContent>
+                  <TextField
+                    variant="outlined"
+                    name="Fpassword"
+                    id="Fpassword"
+                    margin="dense"
+                    placeholder="New password"
+                    type="password"
+                    fullWidth
+                    value={Fpassword}
+                    onChange={e => this.setState({ Fpassword: e.target.value })}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={this.handleClose1} color="primary">
+                    Close
+                  </Button>
+                  <Button onClick={this.handleClose} color="primary">
+                    Change
+                  </Button>
+                </DialogActions>
+              </Dialog>
 
               <Button
                 onClick={this.onClickLogin}
@@ -124,6 +213,16 @@ class Layout extends Component {
               >
                 {this.state.isChecking && <CircularProgress size={20} />}Login
               </Button>
+              <Typography color="textSecondary" variant="body1">
+                <Button
+                  className={classes.signInButton}
+                  color="primary"
+                  onClick={this.handleClickOpen}
+                  variant="contained"
+                >
+                  Forgot password
+                </Button>
+              </Typography>
             </form>
           </div>
         </Container>
